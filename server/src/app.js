@@ -23,11 +23,13 @@ export function createApp() {
     contentSecurityPolicy: { useDefaults: true, directives: { 'default-src': ["'self'"], 'img-src': ["'self'", 'data:', 'https:'], 'object-src': ["'none'"] } },
     crossOriginResourcePolicy: { policy: 'cross-origin' }, // /uploads must be readable from the SPA's own origin
   }));
+
   app.use(
     cors({
       origin(origin, cb) {
-        // Allow same-origin / non-browser clients (no Origin header) and the configured frontend only.
-        if (!origin || origin === config.clientOrigin) return cb(null, true);
+        const allowedOrigin = 'https://hostelbd.netlify.app';
+        // Allow same-origin / non-browser clients (no Origin header) and the Netlify frontend only.
+        if (!origin || origin === allowedOrigin) return cb(null, true);
         return cb(new Error('Not allowed by CORS'));
       },
       credentials: true,
@@ -35,6 +37,7 @@ export function createApp() {
       allowedHeaders: ['Content-Type', 'Authorization'],
     })
   );
+
   app.use(compression());
   if (!config.isProd || process.env.LOG_REQUESTS === 'true') app.use(morgan(config.isProd ? 'combined' : 'dev'));
 
