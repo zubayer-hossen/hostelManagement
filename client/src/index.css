@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Default theme. Overridden at runtime from Admin → Settings → Theme (see src/utils/theme.js). */
+:root {
+  --color-primary-50: 241 240 253;
+  --color-primary-100: 227 225 251;
+  --color-primary-200: 199 196 247;
+  --color-primary-300: 167 162 242;
+  --color-primary-400: 123 116 236;
+  --color-primary-500: 79 70 229;
+  --color-primary-600: 70 62 202;
+  --color-primary-700: 57 50 165;
+  --color-primary-800: 46 41 133;
+  --color-primary-900: 35 31 101;
+  --color-secondary-50: 236 248 253;
+  --color-secondary-100: 216 241 251;
+  --color-secondary-200: 178 226 248;
+  --color-secondary-300: 134 210 244;
+  --color-secondary-400: 74 188 238;
+  --color-secondary-500: 14 165 233;
+  --color-secondary-600: 12 145 205;
+  --color-secondary-700: 10 119 168;
+  --color-secondary-800: 8 96 135;
+  --color-secondary-900: 6 73 103;
+  --color-accent-50: 254 247 235;
+  --color-accent-100: 253 239 216;
+  --color-accent-200: 252 224 177;
+  --color-accent-300: 250 206 133;
+  --color-accent-400: 248 182 72;
+  --color-accent-500: 245 158 11;
+  --color-accent-600: 216 139 10;
+  --color-accent-700: 176 114 8;
+  --color-accent-800: 142 92 6;
+  --color-accent-900: 108 70 5;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+  body { @apply bg-slate-50 text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-200; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-primary-500; }
+  h1, h2, h3 { @apply text-slate-900 dark:text-white; }
+}
+
+@layer components {
+  .card { @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900; }
+  .glass { @apply border border-white/40 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/60; }
+  .label { @apply mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300; }
+  .field {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition
+      focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30
+      disabled:cursor-not-allowed disabled:opacity-60
+      dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500;
+  }
+  .field-error { @apply border-red-400 focus:border-red-500 focus:ring-red-500/30; }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500
+      disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary { @apply btn bg-primary-600 text-white shadow-sm hover:bg-primary-700 active:bg-primary-800; }
+  .btn-secondary { @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700; }
+  .btn-ghost { @apply btn text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800; }
+  .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+}
+
+/* Animation preference from settings (theme.animations = false) and OS reduced-motion. */
+html[data-animations='off'] *, html[data-animations='off'] *::before, html[data-animations='off'] *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* Headline ticker */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee { animation: marquee 30s linear infinite; }
+.marquee-pause:hover .marquee { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { animation: none; flex-wrap: wrap; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .marquee > :nth-child(2) { display: none; } }
+html[data-animations='off'] .marquee { animation: none !important; flex-wrap: wrap; width: auto; }
+html[data-animations='off'] .marquee > :nth-child(2) { display: none; }
